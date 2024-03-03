@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example:Display json Data to HTML Table</title>
+    <link href="./style.css" rel="stylesheet" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="mx-2">
+      <h1 class="text-3xl font-bold text-center my-4">
+        JSON Data to HTML Table
+      </h1>
+
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table
+          class="w-full text-sm text-left rtl:text-right text-gray-500"
+          id="data-table"
+        >
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3">Name</th>
+              <th scope="col" class="px-6 py-3">Rating</th>
+              <th scope="col" class="px-6 py-3">comment</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+        <!-- JavaScript code using jQuery -->
+        <script>
+          $(document).ready(function () {
+            // Retrieve JSON file
+            $.getJSON("./reviews.json", function (data) {
+              var tableBody = $("#data-table tbody");
+
+              // Iterate over each reviews object in the JSON data
+              $.each(data.reviews, function (index, review) {
+                var row = $(
+                  `<tr class="bg-white border-b hover:bg-gray-100"></tr>`
+                ); // Create a new table row
+
+                // Create table cells and fill them with the review data
+                row.append(
+                  $(
+                    `<td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"></td>`
+                  ).text(review.reviewer.displayName)
+                );
+                row.append(
+                  $('<td class="px-6 py-4"></td>').text(review.starRating)
+                );
+                row.append(
+                  $('<td class="px-6 py-4"></td>').text(review.comment)
+                );
+
+                tableBody.append(row); // Add the row to the table body
+              });
+            });
+          });
+        </script>
+      </div>
+      <div class="row mb-10 mt-10">
+        <br />
+      </div>
+    </div>
+  </body>
+</html>
