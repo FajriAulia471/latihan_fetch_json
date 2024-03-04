@@ -43,30 +43,47 @@
     <!-- JavaScript code using jQuery -->
     <script>
       $(document).ready(function () {
-        // Retrieve JSON file
-        $.getJSON("./reviews.json", function (data) {
-          var tableBody = $("#data-table tbody");
-
-          // Iterate over each reviews object in the JSON data
-          $.each(data.reviews, function (index, review) {
-            var row = $(
-              `<tr class="bg-white border-b hover:bg-gray-100"></tr>`
-            ); // Create a new table row
-
-            // Create table cells and fill them with the review data
-            row.append(
-              $(
-                `<td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"></td>`
-              ).text(review.reviewer.displayName)
+        // Retrieve data from both JSON files (assuming they are named "reviews1.json" and "reviews2.json")
+        Promise.all([
+          $.getJSON("./reviews/reviews1.json"),
+          $.getJSON("./reviews/reviews2.json"),
+          $.getJSON("./reviews/reviews3.json"),
+          $.getJSON("./reviews/reviews4.json"),
+          $.getJSON("./reviews/reviews5.json"),
+          $.getJSON("./reviews/reviews6.json"),
+          $.getJSON("./reviews/reviews7.json"),
+          $.getJSON("./reviews/reviews8.json"),
+        ])
+          .then((data) => {
+            // Combine both sets of reviews into a single array
+            const combinedReviews = data.reduce(
+              (acc, current) => acc.concat(current.reviews),
+              []
             );
-            row.append(
-              $('<td class="px-6 py-4"></td>').text(review.starRating)
-            );
-            row.append($('<td class="px-6 py-4"></td>').text(review.comment));
 
-            tableBody.append(row); // Add the row to the table body
-          });
-        });
+            var tableBody = $("#data-table tbody");
+
+            // Iterate over each review in the combined array
+            $.each(combinedReviews, function (index, review) {
+              var row = $(
+                `<tr class="bg-white border-b hover:bg-gray-100"></tr>`
+              ); // Create a new table row
+
+              // Create table cells and fill them with the review data
+              row.append(
+                $(
+                  `<td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"></td>`
+                ).text(review.reviewer.displayName)
+              );
+              row.append(
+                $('<td class="px-6 py-4"></td>').text(review.starRating)
+              );
+              row.append($('<td class="px-6 py-4"></td>').text(review.comment));
+
+              tableBody.append(row); // Add the row to the table body
+            });
+          })
+          .catch((error) => console.error("Error retrieving data:", error));
       });
     </script>
   </body>
